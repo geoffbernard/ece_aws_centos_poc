@@ -1,0 +1,35 @@
+
+#for a 3 client load
+# set up 3 i3?s with right ports open 
+# use this AWS supplied AMI:
+# Ubuntu Server 18.04 LTS (HVM), SSD Volume Type 
+#  i3.large or large should be good , depending on your dataset
+# shell in and run the following:
+
+sudo apt update
+sudo apt-get install gcc python3-pip python3-dev
+sudo apt install git
+ll /usr/bin/java
+ll /etc/alternatives/java
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+echo $JAVA_HOME
+
+sudo pip3 install esrally
+esrally
+esrally list tracks
+esrally --distribution-version=6.5.0 --track=http_logs --challenge=append-no-conflicts
+
+# when ready, you can get fancy and run something like this against your own cluster for logs, 
+# using the event track dataset ( https://github.com/elastic/rally-eventdata-track )
+#  
+# esrally \
+# --target-hosts=es_host_1:9243,es_host2:9243,es_host_3:9243 \
+# --pipeline=benchmark-only \
+# --client-options="use_ssl:true,verify_certs:false,basic_auth_user:'elastic',basic_auth_password:'password'" \
+# --challenge="elasticlogs-1bn-load" \
+# --rack-path=/home/elastic/eventdata/rally-eventdata-track/eventdata \
+# --track-param="bulk_indexing_clients:80,shard_count:13,number_of_replicas:1" \
+# --load-driver-hosts=0.0.0.0,1.1.1.1,2.2.2.2
+#
+
